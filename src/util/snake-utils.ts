@@ -39,19 +39,21 @@ export const moveSnake = (
                     newHead = { row: oldHead.row, col: 0 };
                 } else {
                     newHead = { row: oldHead.row, col: oldHead.col + 1 };
-                }                
+                }
                 break;
             default:
                 newHead = oldHead;
                 break;
         }
         const newSnake = [...prevSnake.slice(1), newHead];
-        checkForFood(newHead, food, numRows, numCols, setFood, setSnake);
+
+        checkIfHadFood(newHead, food, numRows, numCols, setFood, setSnake);
+
         return newSnake;
     });
 };
 
-export const checkForFood = (
+const checkIfHadFood = (
     newHead: SnakePartType,
     food: SnakePartType,
     numRows: number,
@@ -65,7 +67,7 @@ export const checkForFood = (
     }
 };
 
-export const generateFoodPosition = (
+const generateFoodPosition = (
     numRows: number,
     numCols: number,
     setFood: Dispatch<SetStateAction<SnakePartType>>,
