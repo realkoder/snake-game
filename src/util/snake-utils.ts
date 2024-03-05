@@ -7,23 +7,39 @@ export const moveSnake = (
     food: SnakePartType,
     numRows: number,
     numCols: number,
-    setFood: Dispatch<SetStateAction<SnakePartType>>,    
+    setFood: Dispatch<SetStateAction<SnakePartType>>,
 ) => {
     setSnake((prevSnake) => {
         const oldHead = prevSnake[prevSnake.length - 1];
         let newHead;
         switch (direction) {
-            case "up":                
-                newHead = { row: oldHead.row - 1, col: oldHead.col };
+            case "up":
+                if (oldHead.row === 0) {
+                    newHead = { row: numRows - 1, col: oldHead.col };
+                } else {
+                    newHead = { row: oldHead.row - 1, col: oldHead.col };
+                }
                 break;
             case "down":
-                newHead = { row: oldHead.row + 1, col: oldHead.col };
+                if (oldHead.row === numRows - 1) {
+                    newHead = { row: 0, col: oldHead.col };
+                } else {
+                    newHead = { row: oldHead.row + 1, col: oldHead.col };
+                }
                 break;
             case "left":
-                newHead = { row: oldHead.row, col: oldHead.col - 1 };
+                if (oldHead.col === 0) {
+                    newHead = { row: oldHead.row, col: numCols - 1 };
+                } else {
+                    newHead = { row: oldHead.row, col: oldHead.col - 1 };
+                }
                 break;
             case "right":
-                newHead = { row: oldHead.row, col: oldHead.col + 1 };
+                if (oldHead.col === numCols - 1) {
+                    newHead = { row: oldHead.row, col: 0 };
+                } else {
+                    newHead = { row: oldHead.row, col: oldHead.col + 1 };
+                }                
                 break;
             default:
                 newHead = oldHead;
@@ -37,24 +53,24 @@ export const moveSnake = (
 
 export const checkForFood = (
     newHead: SnakePartType,
-    food: SnakePartType,    
+    food: SnakePartType,
     numRows: number,
     numCols: number,
     setFood: Dispatch<SetStateAction<SnakePartType>>,
-    setSnake: Dispatch<SetStateAction<SnakePartType[]>>,    
+    setSnake: Dispatch<SetStateAction<SnakePartType[]>>,
 ) => {
     if (newHead.row === food.row && newHead.col === food.col) {
         generateFoodPosition(numRows, numCols, setFood);
-        setSnake(prevSnake => [...prevSnake, food]);                
+        setSnake(prevSnake => [...prevSnake, food]);
     }
 };
 
 export const generateFoodPosition = (
-    numRows: number, 
-    numCols: number, 
-    setFood: Dispatch<SetStateAction<SnakePartType>>,    
-    ) => {
+    numRows: number,
+    numCols: number,
+    setFood: Dispatch<SetStateAction<SnakePartType>>,
+) => {
     const row = Math.floor(Math.random() * numRows);
     const col = Math.floor(Math.random() * numCols);
-    setFood({ row, col });  
+    setFood({ row, col });
 };
